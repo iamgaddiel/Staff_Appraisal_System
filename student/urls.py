@@ -7,5 +7,5 @@ from .views import (
 app_name = "student"
 
 urlpatterns = [
-    path("review/<int:id>/", StudentEvaluationView.as_view(), name="student_review"),
+    path("review/<int:lecturer_id>/", StudentEvaluationView.as_view(), name="student_review"),
 ]

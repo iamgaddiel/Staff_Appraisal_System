@@ -64,6 +64,7 @@
                     </div>
                 </div>
 
+                {% if not user.is_authenticated %}
                 <div id="menu-2" class="content about-section">
                     <div class="row">
                         <div class="col-md-8 col-sm-8">
@@ -79,17 +80,17 @@
                         </div>
                     </div>
                 </div>
-
+                
                 <div id="menu-2" class="content about-section">
                     <div class="row">
                         <div class="col-md-8 col-sm-8">
                             <div class="box-content profile">
-
+                                
                             </div>
                         </div>
                     </div>
                 </div>
-
+                {% endif %}
                 <div id="menu-3" class="content gallery-section">
                     <div class="box-content">
                         <h3 class="widget-title">What's Happening in Veritas University</h3>
@@ -211,9 +212,11 @@
                     <li>
                         <a class="show-1 active homebutton" href="#"><i class="fa fa-home"></i>Home</a>
                     </li>
+                    {% if not user.is_authenticated %}
                     <li>
                         <a class="show-2 aboutbutton" href="#"><i class="fa fa-user"></i>Find Staff</a>
                     </li>
+                    {%%}
                     <li>
                         <a class="show-3 projectbutton" href="#"><i class="fa fa-camera"></i>News</a>
                     </li>

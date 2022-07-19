@@ -1,6 +1,6 @@
 from django import forms
 
-from lecturer.models import Lecturer, PeerPerformanceEvaluation
+from lecturer.models import Lecturer, PeerPerformanceEvaluation, SelfEvaluation
 
 
 class LecturerCreationForm(forms.ModelForm):
@@ -26,6 +26,15 @@ class PeerPerformanceEvaluationForm(forms.ModelForm):
             "lecturer"
         ]
         
-        # widgets = {
-        #     'username': username.widget.attrs.update({'class': })
-        # }
+
+class SelfEvaluationForm(forms.ModelForm):
+    class Meta:
+        model = SelfEvaluation
+        exclude = [
+            "name",
+            "lecturer",
+            "dob",
+            "Please_write_down_what_you_are_good_at",
+            "What_do_you_need_to_do_to_improve_yourself",
+            "What_strategies_will_you_use_to_improve_yourself"
+        ]

@@ -20,18 +20,31 @@
               </header>
             </div>
             <div class="card-content">
-
-                <br />
-                <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-              </div>
+              <p>Department: {{ lecturer.user.department }}</p>
+              <p>Rank: {{ lecturer.user.academic_rank }}</p>
+            </div>
           </div>
           <footer class="card-footer">
-            {% if user.account_type == "lecturer" %}
-            <a href="{% url 'lecturer:peer_review' lecturer.id %}" class="card-footer-item">Review</a>
+            <!-- Evaluate Self -->
+            {% if lecturer.user.pk == user.pk %}
+            <a href="{% url 'lecturer:self_review' lecturer.id %}" class="card-footer-item">Evaluate Self </a>
+            
+            <!-- Evaluate By Peer -->
+            {% elif user.account_type == "lecturer" %}
+            <a
+              href="{% url 'lecturer:peer_review' lecturer.id %}"
+              class="card-footer-item"
+              >Evaluate Peer
+            </a>
+
+            <!-- Evaluate By Student -->
             {% elif user.account_type == "student" %}
-            <a href="{% url 'student:student_review' lecturer.id %}" class="card-footer-item">Review</a>
-            {% elif lecturer.user == user %}
-            <a href="" class="card-footer-item">Review</a>
+            <a
+              href="{% url 'student:student_review' lecturer.id %}"
+              class="card-footer-item"
+              >Evaluate Lecturer
+            </a>
+
             {% endif %}
 
             <!-- <a href="#" class="card-footer-item">View Review</a> -->
@@ -39,11 +52,10 @@
           </footer>
         </div>
         {% empty %}
-          <div class="has-text-ceter">
-            <h1 class="text-primary">No Lecturer Found</h1>
-          </div>
+      <div class="has-text-ceter">
+          <h1 class="text-primary">No Lecturer Found</h1>
+        </div>
         {% endfor %}
-
       </div>
     </section>
   </div>

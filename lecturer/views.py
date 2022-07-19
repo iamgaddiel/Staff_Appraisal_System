@@ -10,8 +10,8 @@ from django.views.generic import View, CreateView, ListView
 from core.forms import CreateUserForm
 from core.models import Profile
 from core.utils import generate_shool_id
-from lecturer.forms import LecturerCreationForm, PeerPerformanceEvaluationForm
-from lecturer.models import Lecturer, PeerPerformanceEvaluation
+from lecturer.forms import LecturerCreationForm, PeerPerformanceEvaluationForm, SelfEvaluationForm
+from lecturer.models import Lecturer, PeerPerformanceEvaluation, SelfEvaluation
 
 
 class CreateLecturer(View):
@@ -73,7 +73,27 @@ class PeerReview(LoginRequiredMixin, CreateView):
 
         return super().form_valid(form)
 
+class SelfReview(LoginRequiredMixin, CreateView):
+    model       = SelfEvaluation
+    form_class  = SelfEvaluationForm
+    template_name = "lecturer/self_review.html"
+    success_url = reverse_lazy("core:dashboard")
 
-class ReviewList(LoginRequiredMixin, ListView):
-    pass
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        lecturer = get_object_or_404(Lecturer, id=self.kwargs.get('lecturer_id'))
+        context['lecturer'] =  lecturer
+        return context
 
+    def form_valid(self, form) -> HttpResponse:
+        lecturer = Lecturer.objects.get(id=self.request.POST.get('lecturer_id'))
+
+        form.instance.lecturer = lecturer
+        form.instance.name = self.request.user.name
+        form.instance.dob = self.request.user.dob
+        form.instance.evaluators_name =self.request.user.name
+        form.instance.I_attend_trainings_about_my_teaching_field = self.request.POST.get("I_attend_trainings_about_my_teaching_field")
+        form.instance.My_course_plans_are_regular_and_up_to_date = self.request.POST.get('My_course_plans_are_regular_and_up_to_date')
+        form.instance.I_keep_records_of_my_students_learning_progress = self.request.POST.get('I_keep_records_of_my_students_learning_progress')
+        messages.success(self.request, message="Your evaluation is submitted successfully")
+        return super().form_valid(form)

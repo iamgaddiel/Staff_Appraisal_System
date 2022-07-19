@@ -1,7 +1,7 @@
 {% extends 'core/layout.html' %} {% block content %}
 <div class="container" id="page-content">
   <div class="box h">
-    <h1 class="title border-bottom">Student Evaluation Review</h1>
+    <h1 class="title border-bottom">Leave Review</h1>
 
     <div class="login-form mt-3">
       <form method="POST">
@@ -24,45 +24,45 @@
         </div>
         {% endfor %}
 
-        <!-- Cooperates_with_others -->
-   
-        <!-- Performance Comments -->
+
+        <!-- I_attend_trainings_about_my_teaching_field -->
         <section class="mt-4">
-        <label for="">Which aspect of the teaching did you like the most?</label>
+        <label for="">Please write down what you are good at</label>
           <textarea 
-          name="favorite_aspect_of_teaching" 
+          name="Please_write_down_what_you_are_good_at" 
           cols="30" 
           rows="5" 
           class="textarea is-primary is-size-4" 
+          placeholder="Please write down what you are good at"
           autocomplete
           spellcheck
           required
           ></textarea>
         </section>
 
-        <!-- Objectives -->
+        <!-- What_do_you_need_to_do_to_improve_yourself -->
         <section class="mt-4">
-        <label for="">Which aspect of the teaching did you dislike the most?</label>
+        <label for="">What do you need to do to improve yourself</label>
           <textarea 
-          name="least_favorite_aspect_of_teaching" 
+          name="What_do_you_need_to_do_to_improve_yourself" 
           cols="30" 
           rows="5" 
           class="textarea is-primary is-size-4" 
           autocomplete
           spellcheck
           required
-          placeholder="Objectives"></textarea>
+          placeholder="What do you need to do to improve yourself"></textarea>
         </section>
 
-        <!-- Suggestions -->
+        <!-- What_strategies_will_you_use_to_improve_yourself -->
         <section class="mt-4">
-        <label for="">hat can be done to improve the teaching of the course?</label>
+        <label for="">What strategies will you use to improve yourself</label>
           <textarea 
-          name="suggestions_for_improvement" 
+          name="What_strategies_will_you_use_to_improve_yourself" 
           cols="30" 
           rows=5" 
           class="textarea is-primary is-size-4" 
-          placeholder="Suggestions to successfully achieve objectives"
+          placeholder="What strategies will you use to improve yourself"
           autocomplete
           spellcheck
           required

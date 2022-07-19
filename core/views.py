@@ -1,13 +1,11 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, DeleteView, ListView, TemplateView, View
+from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.shortcuts import redirect
-from core.forms import CreateUserForm
 from django.db.models import Q
-from django.contrib.auth.views import LoginView
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import login
 

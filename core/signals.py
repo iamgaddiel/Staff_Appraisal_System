@@ -2,7 +2,7 @@ from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
 from core.utils import generate_password, generate_shool_id
-from .models import CustomUser
+from .models import CustomUser, Profile
 from student.models import Student
 
 
@@ -15,7 +15,6 @@ def add_user_values(sender, instance, *args, **kwargs):
 @receiver(post_save, sender=CustomUser)
 def create(sender, instance, created, **kwargs):
   if created:
-    instance.shool_id = generate_shool_id(8)
+    Profile.objects.create(user=instance)
     if instance.account_type == "student":
         Student.objects.create(user=instance)
-

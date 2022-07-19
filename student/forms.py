@@ -1,13 +1,11 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
 
-from core.models import CustomUser, Profile
-from student.views import StudentEvaluationView
+from student.models import StudentsStaffEvaluation
 
 
 class StudentEvaluationForm(forms.ModelForm):
     class Meta:
-        model = StudentEvaluationView
+        model = StudentsStaffEvaluation
         exclude = [
             "lecturer",
             "favorite_aspect_of_teaching",
