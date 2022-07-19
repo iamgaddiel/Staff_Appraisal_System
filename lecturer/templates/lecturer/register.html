@@ -1,0 +1,113 @@
+{% extends 'core/layout.html' %} {% block content %}
+<div class="container" id="page-content">
+  <div class="box">
+    <h1 class="title border-bottom">Register</h1>
+    <div class="login-form mt-3">
+      <form action="{% url 'lecturer:register' %}" method="post">
+        {% csrf_token %}
+        <!-- Name -->
+        <div class="field">
+          <label for="" class="">Name</label>
+          <p class="control has-icons-left has-icons-right">
+            <input
+              class="input is-large"
+              type="text"
+              placeholder="Peter Robinson"
+              name="name"
+            />
+          </p>
+        </div>
+        <!-- Userenma -->
+        <div class="field">
+          <label for="" class="">Username</label>
+          <p class="control has-icons-left has-icons-right">
+            <input
+              class="input is-large"
+              type="text"
+              placeholder="Alex123"
+              name="username"
+            />
+          </p>
+        </div>
+        <!-- DOB -->
+        <div class="field">
+          <label for="" class="">Date of Birth</label>
+          <p class="control has-icons-left has-icons-right">
+            <input
+              class="input is-large"
+              type="date"
+              placeholder="12/21/2000"
+              name="dob"
+            />
+          </p>
+        </div>
+        <!-- Faculty -->
+        <div class="field">
+          <label for="" class="">Faculty</label>
+          <p class="control has-icons-left has-icons-right">
+            <input
+              class="input is-large"
+              type="text"
+              placeholder="Faculty"
+              name="faculty"
+            />
+          </p>
+        </div>
+        <!-- Department  -->
+        <div class="my-5">
+          <label for="" class="">Academic Rank</label> <br>
+          <div class="select is-primary">
+            <select name="academic_rank" id="">
+              <option value="Assistant">Assistant lecturer</option>
+              <option value="Lecturer I">Lecturer I</option>
+              <option value="Lecturer II">Lecturer II</option>
+              <option value="Senior lecturer">Senior lecturer</option>
+              <option value="Professor">Professor</option>
+            </select>
+          </div>
+        </div>
+        <!--  -->
+        <div class="field">
+          <label for="" class="">Department</label>
+          <p class="control has-icons-left has-icons-right">
+            <input
+              class="input is-large"
+              type="text"
+              placeholder="Department"
+              name="department"
+            />
+          </p>
+        </div>
+        <!-- Password -->
+        <div class="field">
+          <label for="" class="">Password</label>
+          <p class="control has-icons-left">
+            <input
+              name="password1"
+              class="input is-large is-primary"
+              type="password"
+              placeholder="Password"
+            />
+          </p>
+        </div>
+        <!-- Confirm Password -->
+        <div class="field">
+          <label for="" class="">Confirm Password</label>
+          <p class="control has-icons-left">
+            <input
+              name="password2"
+              class="input is-large is-primary"
+              type="password"
+              placeholder="Confirm Password"
+            />
+          </p>
+        </div>
+        <!-- Registration Button -->
+        <div class="submit-btn mt-4">
+          <button class="button is-primary is-large">Register</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'core/layout.html' %} {% block content %}
+<div class="container" id="page-content">
+  <div class="box h">
+    <h1 class="title border-bottom">Student Evaluation Review</h1>
+
+    <div class="login-form mt-3">
+      <form method="POST">
+        {% csrf_token %} 
+
+        {% for field in form %}
+
+        <!-- Evaluators name  -->
+        <div class="field">
+            <input type="hidden" name="lecturer_id" value="{{ lecturer.id  }}">
+            <input type="hidden" name="evaluators_name" value="{{ lecturer.user.name  }}">
+        </div>
+
+
+        <div class="field">
+          <label class="">{{ field.verbose_name }}</label>
+          <div class="control">
+            <div class="select is-primary is-large">{{ field }}</div>
+          </div>
+        </div>
+        {% endfor %}
+
+        <!-- Cooperates_with_others -->
+   
+        <!-- Performance Comments -->
+        <section class="mt-4">
+        <label for="">Which aspect of the teaching did you like the most?</label>
+          <textarea 
+          name="favorite_aspect_of_teaching" 
+          cols="30" 
+          rows="5" 
+          class="textarea is-primary is-size-4" 
+          autocomplete
+          spellcheck
+          required
+          ></textarea>
+        </section>
+
+        <!-- Objectives -->
+        <section class="mt-4">
+        <label for="">Which aspect of the teaching did you dislike the most?</label>
+          <textarea 
+          name="least_favorite_aspect_of_teaching" 
+          cols="30" 
+          rows="5" 
+          class="textarea is-primary is-size-4" 
+          autocomplete
+          spellcheck
+          required
+          placeholder="Objectives"></textarea>
+        </section>
+
+        <!-- Suggestions -->
+        <section class="mt-4">
+        <label for="">hat can be done to improve the teaching of the course?</label>
+          <textarea 
+          name="suggestions" 
+          cols="30" 
+          rows=5" 
+          class="textarea is-primary is-size-4" 
+          placeholder="Suggestions to successfully achieve objectives"
+          autocomplete
+          spellcheck
+          required
+          ></textarea>
+        </section>
+
+
+
+        <!-- Registration Button -->
+        <div class="submit-btn mt-6">
+          <button class="button is-primary is-large">Review</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="has-text-medium mt-6">
+      <small>
+        An annual peer performance evaluation form is used by a supervisor to provide feedback to their employees on their performance over a year. It gives the employee an opportunity to discuss future improvements to their performance with their supervisor. The supervisor uses the annual peer performance evaluation form to give feedback to their employees as part of an annual performance review.
+      </small>
+    </div>
+  </div>
+</div>
+{% endblock %}

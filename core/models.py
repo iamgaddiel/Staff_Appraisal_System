@@ -1,24 +1,34 @@
+from uuid import uuid4
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.contrib import messages
+from django.http import HttpRequest
+
+from core.utils import generate_password, generate_shool_id
 
 
 class CustomUser(AbstractUser):
     # SCH/FCULT/DPT/LC/12345678
-    # SCH/FCULT/DPT/SD/12345678
+    # SCH/FCULT/DPT/SD/12345672
 
     ACCOUNT_TYPE = [
         ("student", "student"),
-        ("student", "student"),
+        ("lecturer", "lecturer"),
     ]
-    id = models.UUIDField(unique=True, primary_key=True, )
-    school_id = models.CharField(max_length=25, unique=True)
-    dob = models.DateField()
-    faculty = models.CharField(max_length=20)  
-    department = models.CharField(max_length=20)
-    account_type = models.CharField(max_length=10)
+    
+    id = models.UUIDField(unique=True, primary_key=True, default=uuid4, editable=False)
+    school_id = models.CharField(max_length=43, unique=True, blank=True)
+    dob = models.DateField(null=True)
+    faculty = models.CharField(max_length=20, default='')  
+    department = models.CharField(max_length=20, default='')
+    name = models.CharField(max_length=30, default='')
+    account_type = models.CharField(max_length=10, choices=ACCOUNT_TYPE, null=True)
 
     USERNAME_FIELD = "school_id"
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['username']
+
+    def __str__(self) -> str:
+        return f"{self.username} | {self.school_id}"
 
 
 class Profile(models.Model):
@@ -26,18 +36,6 @@ class Profile(models.Model):
     profile_image = models.ImageField(default='profile.jpg', upload_to='profile_images')
 
     def __str__(self) -> str:
-        return "{0} {1}'s profile".format(
-            self.user.first_name, 
-            self.user.last_name
+        return "{0}'s profile".format(
+            self.user.name, 
         )
-
-
-class Lecturer(models.Model):
-    ACADEMIC_RANK = (
-        ("", "")
-    )
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    academic_rank = models.CharField(max_length=20, choices=ACADEMIC_RANK)
-
-    def __str__(self) -> str:
-        return f"lecturer {self.user.first_name} {self.user.last_name}"

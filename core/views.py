@@ -1,43 +1,64 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, DeleteView, ListView, TemplateView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
-from core.forms import CreateUserForm, LecturerCreationForm
+from django.shortcuts import redirect
+from core.forms import CreateUserForm
+from django.db.models import Q
+from django.contrib.auth.views import LoginView
+from django.contrib.auth.hashers import check_password
+from django.contrib.auth import login
 
-from core.models import CustomUser
-
-
-class CreateUser(CreateView):
-    model = CustomUser
-    template_name = "core/create_user.html"
-    success_url = reverse_lazy("core:login")
-
-class CreateLecturer(View):
-    template_name = "core/register_user.html"
-    def get(self, *args, **kwargs):
-        context = {
-            "u_form": CreateUserForm(),
-            "l_form": LecturerCreationForm()
-        }
-        return render(self.request, self.template_name, context=context)
+from core.models import CustomUser, Profile
+from core.utils import generate_shool_id
+from lecturer.models import Lecturer
 
 
-    def post(self, request, *args, **kwargs):
-        u_form = CreateUserForm(request.POST, request.FILES)
-        l_form = LecturerCreationForm(request.POST)
-        if u_form.is_valid() and l_form.is_valid():
-            u_form.save()
-            l_form.save()
-        return reverse_lazy("core:login")
+def index(request):
+    template_name = "core/index.html"
+    return render(request, template_name)
+
+class Dashboard(LoginRequiredMixin, ListView):
+    template_name = "core/dashboard.html"
+    context_object_name = "lecturers"
+    model = Lecturer
 
 
-# class LoginUser(TemplateView):
-#     def post(self, request, *args, **kwargs):
-#         id = request.POST.get("id", None)
-#         password = request.POST.get("password", None)
-#         try:
-#             user = CustomUser(id=id)
-#             check_ = 
-#         except CustomUser.DoesNotExist as e:
-#             return messages.warning(request, "Invalid Login details")
+class Search(LoginRequiredMixin, ListView):
+    template_name: "core/search.html"
+    context_object_name = "lecturers"
+
+    def get_queryset(self):
+        query_param = self.request.GET.get("q", None)
+        queryset = Lecturer.objects.filter(
+            Q(first_name__contains=query_param) | Q(
+                last_name__contains=query_param)
+        )
+        return queryset
+
+
+def login_user(request):
+    template_name = "core/login.html"
+    if request.user.is_authenticated:
+        return redirect("core:dashboard")
+
+    if request.method == "POST":
+            school_id: str = request.POST.get('school_id', None)
+            password: str = request.POST.get('password', None)
+
+            if (school_id and password) is None:
+                messages.error(request, "Access Denied: no credential provided")
+                return render(request, template_name)
+
+            try:
+                user = CustomUser.objects.get(school_id=school_id)
+                if check_password(password, user.password): login(request, user)
+                return redirect('core:dashboard')
+
+            except CustomUser.DoesNotExist:
+                messages.error(request, "Access Denied: invalid credential provided")
+                return render(request, template_name)
+
+    return render(request, template_name)
