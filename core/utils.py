@@ -1,6 +1,6 @@
 from random import choices
 from string import ascii_letters, digits, ascii_uppercase
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import check_password, make_password
 
 
 def generate_shool_id(id_length: int) -> str:
@@ -16,10 +16,12 @@ def generate_password(password: str) -> str:
 def generate_underscore_separator(string: str) -> str: return string.replace(" ", "_")
 
 
+def validate_password(password: str, hash: str) -> bool:
+    return check_password(password, hash)
+
+
+def get_password(password):
+    print(password)
 
 if __name__ == '__main__':
-    # id = generate_shool_id(8)
-    # pswd = generate_password("test.123")
-    string = "What strategies will you use to improve yourself"
-    generated_string = generate_underscore_separator(string)
-    print(generated_string)
+    print(validate_password("1q2wd3ef4r", "pbkdf2_sha256$320000$o460ocGPrT3lrH5uhrUwfG$5YrkP6IMwp2LbRnKkspZrxQIKgzPiovee1wgOXKAZU0="))

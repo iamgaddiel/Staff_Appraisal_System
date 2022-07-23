@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.db.models import Q
-from django.contrib.auth.hashers import check_password
+from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth import login
 
 from core.models import CustomUser, Profile
@@ -45,18 +45,23 @@ def login_user(request):
     if request.method == "POST":
             school_id: str = request.POST.get('school_id', None)
             password: str = request.POST.get('password', None)
-
+            
             if (school_id and password) is None:
                 messages.error(request, "Access Denied: no credential provided")
                 return render(request, template_name)
 
             try:
                 user = CustomUser.objects.get(school_id=school_id)
-                if check_password(password, user.password): login(request, user)
+                print(str(user.password))
+                if user.check_password(password): login(request, user)
+                else:
+                    print(school_id, password, check_password(password, user.password))
+                    messages.error(request, "Access Denied: wrong password")
                 return redirect('core:dashboard')
 
             except CustomUser.DoesNotExist:
                 messages.error(request, "Access Denied: invalid credential provided")
+                print("no user found")
                 return render(request, template_name)
 
     return render(request, template_name)

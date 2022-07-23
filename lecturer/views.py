@@ -29,12 +29,13 @@ class CreateLecturer(View):
         l_form = LecturerCreationForm(request.POST)
 
         if u_form.is_valid() and l_form.is_valid():
-            user = u_form.save()
             u_form.instance.school_id = generate_shool_id(8)
             u_form.instance.account_type = "lecturer"
+            # print(f"{u_form.cleaned_data.get('password1')}")
+            # print(f"{u_form.cleaned_data.get('password2')}")
+            # u_form.instance.password = u_form.cleaned_data("password1")
             user = u_form.save()
 
-            Profile.objects.create(user=user)
             l_form.instance.user = user
             l_form.save()
             messages.success(request, f"{user.username} your account has been created successfully")
